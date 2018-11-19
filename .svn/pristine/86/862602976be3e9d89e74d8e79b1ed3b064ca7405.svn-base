@@ -1,0 +1,34 @@
+package com.example.chen.easygo.me;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.example.chen.easygo.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+/**
+ * 申诉服务
+ */
+public class AppealServiceActivity extends AppCompatActivity {
+
+    @BindView(R.id.appeal_content)
+    EditText appealContent;
+    @BindView(R.id.submit_appeal_btn)
+    Button submitAppealBtn;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_appeal_service);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick(R.id.submit_appeal_btn)
+    public void onViewClicked() {
+    }
+}

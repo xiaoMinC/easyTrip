@@ -1,0 +1,69 @@
+<resources>
+
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">16dp</dimen>
+    <dimen name="activity_vertical_margin">16dp</dimen>
+
+    <!-- 记录人选择界面 -->
+
+    <!-- panel标题大小 -->
+    <dimen name="fieldset_size">16sp</dimen>
+    <!-- 字段字体大小 -->
+    <dimen name="field_size">14sp</dimen>
+
+    <dimen name="number_size">14sp</dimen>
+
+    <dimen name="min_size">12sp</dimen>
+
+    <dimen name="recorder_title">18sp</dimen>
+    <dimen name="recorder_subtitle">20sp</dimen>
+    <dimen name="recorder_content">16sp</dimen>
+    <dimen name="line_height">0.5dp</dimen>
+
+    <!--panel字段字体大小  -->
+    <dimen name="fiel_size">16sp</dimen>
+
+
+    <!-- 表单统一大小 -->
+    <dimen name="form_title">20sp</dimen>
+    <dimen name="form_content">16sp</dimen>
+
+    <dimen name="asknotes_function_size">42dp</dimen>
+    <dimen name="bar_height">64dp</dimen>
+    <!--48dp-->
+    <dimen name="title_bar_size">20sp</dimen>
+    <dimen name="subtitle_bar_size">14sp</dimen>
+    <dimen name="welcome_title_size">16sp</dimen>
+    <dimen name="location_size">12sp</dimen>
+    <dimen name="approve_content">12sp</dimen>
+    <dimen name="distance_size">14sp</dimen>
+
+
+    <dimen name="gv_item_top">10dp</dimen>
+    <dimen name="gv_item_bottom">10dp</dimen>
+    <dimen name="gv_item_top1">8dp</dimen>
+    <dimen name="gv_item_text">14sp</dimen>
+
+    <dimen name="login_left">50dp</dimen>
+    <dimen name="login_right">50dp</dimen>
+
+    <dimen name="account_size">20sp</dimen>
+
+    <dimen name="tab_width_about">40dp</dimen>
+
+    <dimen name="tab_main_msg">0dp</dimen>
+
+    <dimen name="login_hint">13sp</dimen>
+
+    <dimen name="login_register">18sp</dimen>
+
+    <dimen name="wenshu_w">60dp</dimen>
+    <dimen name="wenshu_l">35dp</dimen>
+
+    <dimen name="dialog_l">80dp</dimen>
+
+    <dimen name="title_left">10dp</dimen>
+
+    <dimen name="img_width">160dp</dimen>
+    <dimen name="img_height">160dp</dimen>
+</resources>

@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_margin="5dp"
+    android:id="@+id/ll_item">
+
+    <LinearLayout
+        android:gravity="center|start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="从"
+                    android:textColor="@color/dark_green" />
+
+                <TextView
+                    android:id="@+id/tv_start_addr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="汽车西站"
+                    android:textColor="@color/dark_green"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_start_distance"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginLeft="20dp"
+                    android:text="离出发地3.4km"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="到"
+                    android:textColor="@color/dark_green" />
+
+                <TextView
+                    android:id="@+id/tv_end_addr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="10dp"
+                    android:text="火车南站"
+                    android:textColor="@color/dark_green"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_end_distance"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginLeft="20dp"
+                    android:text="离目的地3.4km"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_money"
+            android:layout_weight="0.2"
+            android:gravity="center"
+            android:textSize="20sp"
+            android:text="68元"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="8月24日 15:30-16:00"
+            android:textColor="@color/dark_green" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

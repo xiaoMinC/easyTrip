@@ -1,0 +1,19 @@
+package com.example.chen.easygo.net.myHttp;
+
+
+
+
+/**
+ * 设置请求地址及请求方式
+ * Created by win764-1 on 2016/12/12.
+ */
+
+public interface RetrofitService {
+
+//    //现场检查表--审批
+//    @POST("exe_check_main_sheet.do?operation=nextStep&sideFlag=app")
+//    Observable<JsonBaseBean> nextStep_check_main_sheet(@QueryMap HashMap<String, String> mMap);
+
+}
+
+

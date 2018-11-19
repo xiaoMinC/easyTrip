@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#00000000"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="400dp"
+        android:background="@drawable/frame_style"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_title_dialog"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:text="请选择" />
+
+       <ListView
+           android:gravity="center"
+           android:dividerHeight="1dp"
+           android:divider="@color/white"
+           android:scrollbars="none"
+           android:id="@+id/one_choose_lv"
+           android:layout_width="match_parent"
+           android:layout_height="match_parent">
+       </ListView>
+    </LinearLayout>
+
+</LinearLayout>

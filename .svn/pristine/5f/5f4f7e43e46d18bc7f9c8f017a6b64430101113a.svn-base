@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightgrey"
+    android:orientation="vertical"
+    tools:context=".loginOrRegister.RegisterOneActivity">
+
+   <LinearLayout
+       android:gravity="center"
+       android:layout_weight="1"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="0dp">
+
+       <TextView
+           android:layout_marginTop="20dp"
+           android:padding="10dp"
+           android:background="@color/white"
+           style="@style/infoTextView_style"
+           android:text="常见问题说明"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+       </TextView>
+
+       <TextView
+           android:id="@+id/tv_q_1"
+           style="@style/infoTextView_style"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="20dp"
+           android:background="@color/white"
+           android:padding="10dp"
+           android:text="Q: 成为容易出行司机需要什么条件？">
+
+       </TextView>
+
+       <TextView
+           android:id="@+id/tv_q_2"
+           style="@style/infoTextView_style"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="20dp"
+           android:background="@color/white"
+           android:padding="10dp"
+           android:text="Q: 注册成为容易出行司机需要准备条件？">
+
+       </TextView>
+
+       <TextView
+           android:id="@+id/tv_q_3"
+           style="@style/infoTextView_style"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           android:layout_marginTop="20dp"
+           android:background="@color/white"
+           android:padding="10dp"
+           android:text="Q: 哪些车辆可以加入容易出行？">
+
+       </TextView>
+
+
+   </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_register_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="注册须知" />
+
+</LinearLayout>

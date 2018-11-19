@@ -1,0 +1,93 @@
+package com.example.chen.easygo.order;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.BaseAdapter;
+import android.widget.LinearLayout;
+import android.widget.TextView;
+
+import com.example.chen.easygo.R;
+import com.example.chen.easygo.utils.ToActivityUtil;
+
+import java.util.List;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class OrderAdapter extends BaseAdapter {
+    private Context mContext;
+    private List<String> mList;
+    private boolean misPassenger;
+
+    public OrderAdapter(Context mContext) {
+        this.mContext = mContext;
+    }
+
+    /**
+     * 是否是乘客行程
+     * @param isPassenger
+     */
+    public void isPassenger(boolean isPassenger){
+        this.misPassenger = isPassenger;
+    }
+
+    @Override
+    public int getCount() {
+        return 10;
+    }
+
+    @Override
+    public Object getItem(int i) {
+        return null;
+    }
+
+    @Override
+    public long getItemId(int i) {
+        return 0;
+    }
+
+    @Override
+    public View getView(int position, View contentView, ViewGroup viewGroup) {
+        ViewHolder holder;
+        if (contentView == null) {
+            contentView = LayoutInflater.from(mContext).inflate(R.layout.order_item, null);
+            holder = new ViewHolder(contentView);
+            contentView.setTag(holder);
+        } else {
+            holder = (ViewHolder) contentView.getTag();
+        }
+
+        if (misPassenger){
+            holder.llItem.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    ToActivityUtil.toNextActivity(mContext,PassengerRuteActivity.class,
+                            new String[][]{{"flag","order"}});
+                }
+            });
+        }
+
+        return contentView;
+    }
+
+    static class ViewHolder {
+        @BindView(R.id.tv_start_addr)
+        TextView tvStartAddr;
+        @BindView(R.id.tv_end_addr)
+        TextView tvEndAddr;
+        @BindView(R.id.tv_time)
+        TextView tvTime;
+        @BindView(R.id.tv_money)
+        TextView tvMoney;
+        @BindView(R.id.ll_item)
+        LinearLayout llItem;
+
+        ViewHolder(View view) {
+            ButterKnife.bind(this, view);
+        }
+    }
+}

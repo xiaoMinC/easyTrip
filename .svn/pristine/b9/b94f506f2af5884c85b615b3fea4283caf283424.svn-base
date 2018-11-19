@@ -1,0 +1,137 @@
+package com.example.chen.easygo.net.myHttp;
+
+import android.app.Activity;
+import android.content.Context;
+import android.content.Intent;
+
+
+import com.example.chen.easygo.net.Bean.JsonBaseBean;
+import com.example.chen.easygo.net.Bean.LoginBean;
+import com.example.chen.easygo.utils.L;
+import com.iflytek.cloud.thirdparty.S;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import okhttp3.ResponseBody;
+import rx.Observable;
+
+/**
+ * Created by win764-1 on 2016/12/12.
+ */
+
+public class DataManager {
+    private RetrofitService mRetrofitService;
+    private HashMap<String, String> mMap = new HashMap<>();
+
+    public DataManager(Context context, HashMap<String, String> map) {
+//        if (UserLoginUtil.getUUID() != null) {
+//            mMap.put("uuid", UserLoginUtil.getUUID());
+//
+//        } else if (UserLoginUtil.getUUID().equals("")) {
+//            T.showLong(context, "系统参数被清空，请重新登录！");
+//            Intent intent = new Intent(context.getApplicationContext(), LoginActivity.class);
+//            context.startActivity(intent);
+//            ((Activity) context).finish();
+//        }
+//        mMap.putAll(map);
+        L.i("参数:" + mMap.toString());
+        for (String key : map.keySet()) {
+            if (map.get(key) == null)
+                L.i("字段属性名："+key + "字段值" + map.get(key));
+        }
+        this.mRetrofitService = RetrofitHelper.getInstance(context).getServer();
+    }
+
+
+    public Observable<JsonBaseBean> getCode(String url) {
+        return mRetrofitService.getCode(url);
+    }
+
+    public Observable<JsonBaseBean> uploadFile(HashMap<String, String> map, RequestBody description, Map<String, RequestBody> bodys) {
+        return mRetrofitService.uploadFile(map, description, bodys);
+    }
+
+    public Observable<LoginBean> login(HashMap<String, String> map) {
+        return mRetrofitService.login(map);
+    }
+
+    public Observable<JsonBaseBean> personCenter(HashMap<String, String> map) {
+        return mRetrofitService.personCenter(map);
+    }
+
+    public Observable<JsonBaseBean> driverIcon(HashMap<String, String> map, RequestBody description, MultipartBody.Part file) {
+        return mRetrofitService.driverIcon(map, description, file);
+    }
+
+    public Observable<JsonBaseBean> driverInfo(HashMap<String, String> map) {
+        return mRetrofitService.driverInfo(map);
+    }
+
+    public Observable<JsonBaseBean> driverAppeal(HashMap<String, String> map) {
+        return mRetrofitService.driverAppeal(map);
+    }
+
+    public Observable<JsonBaseBean> driverMonth(HashMap<String, String> map) {
+        return mRetrofitService.driverMonth(map);
+    }
+
+    public Observable<JsonBaseBean> search(HashMap<String, String> map) {
+        return mRetrofitService.search(map);
+    }
+
+    public Observable<JsonBaseBean> driverReceive(HashMap<String, String> map) {
+        return mRetrofitService.driverReceive(map);
+    }
+
+    public Observable<JsonBaseBean> loadPosition(HashMap<String, String> map) {
+        return mRetrofitService.loadPosition(map);
+    }
+
+    public Observable<JsonBaseBean> directRoute(HashMap<String, String> map) {
+        return mRetrofitService.directRoute(map);
+    }
+
+    public Observable<JsonBaseBean> alreadyReceive(HashMap<String, String> map) {
+        return mRetrofitService.alreadyReceive(map);
+    }
+
+    public Observable<JsonBaseBean> publishTravel(HashMap<String, String> map) {
+        return mRetrofitService.publishTravel(map);
+    }
+
+    public Observable<JsonBaseBean> safeMode(HashMap<String, String> map) {
+        return mRetrofitService.safeMode(map);
+    }
+
+    public Observable<JsonBaseBean> travelRelay(HashMap<String, String> map) {
+        return mRetrofitService.travelRelay(map);
+    }
+
+    public Observable<JsonBaseBean> travelCancel(HashMap<String, String> map) {
+        return mRetrofitService.travelCancel(map);
+    }
+
+    public Observable<JsonBaseBean> travelRemind(HashMap<String, String> map) {
+        return mRetrofitService.travelRemind(map);
+    }
+
+    public Observable<JsonBaseBean> travelArrival(HashMap<String, String> map) {
+        return mRetrofitService.travelArrival(map);
+    }
+
+    public Observable<JsonBaseBean> travelProblem(HashMap<String, String> map) {
+        return mRetrofitService.travelProblem(map);
+    }
+
+    public Observable<JsonBaseBean> publicity(String url) {
+        return mRetrofitService.publicity(url);
+    }
+
+    public Observable<JsonBaseBean> loadRegisterState(String url) {
+        return mRetrofitService.loadRegisterState(url);
+    }
+
+}

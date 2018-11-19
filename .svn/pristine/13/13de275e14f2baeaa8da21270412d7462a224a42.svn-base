@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.chen.easygo.order.PublishActivity">
+
+    <include layout="@layout/title_bar"/>
+
+    <LinearLayout
+        android:gravity="center"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp">
+        <TextView
+            android:id="@+id/id_start_addr"
+            style="@style/infoEditText_style"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:drawableRight="@drawable/icon_arrow"
+            android:hint="出发地区域，默认当前位置" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/id_end_addr"
+            style="@style/infoEditText_style"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:drawableRight="@drawable/icon_arrow"
+            android:hint="目的地区域" />
+
+        <TextView
+            android:text="4"
+            android:layout_marginTop="10dp"
+            android:id="@+id/id_num"
+            style="@style/infoEditText_style"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:drawableRight="@drawable/icon_arrow"
+            android:hint="座位数" />
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:id="@+id/id_start_time"
+            style="@style/infoEditText_style"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:hint="行程开始时间，默认当前时间" />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_publish"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="立即发布行程" />
+</LinearLayout>

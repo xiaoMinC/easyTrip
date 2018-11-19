@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/lightgrey"
+    android:orientation="vertical"
+    tools:context=".loginOrRegister.RegisterOneActivity">
+
+    <include layout="@layout/title_bar"/>
+
+   <LinearLayout
+       android:gravity="center"
+       android:layout_weight="1"
+       android:orientation="vertical"
+       android:layout_width="match_parent"
+       android:layout_height="0dp">
+
+       <TextView
+           android:layout_marginTop="20dp"
+           android:padding="10dp"
+           android:background="@color/white"
+           style="@style/infoTextView_style"
+           android:text="常见问题说明"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+       </TextView>
+
+       <LinearLayout
+           android:orientation="vertical"
+           android:id="@+id/ll_question"
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
+
+       </LinearLayout>
+
+   </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_register_msg"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:text="注册须知" />
+
+</LinearLayout>

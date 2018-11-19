@@ -1,0 +1,493 @@
+package com.example.chen.easygo.loginOrRegister;
+
+import android.Manifest;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.example.chen.easygo.BaseActivity;
+import com.example.chen.easygo.EasyGoApplication;
+import com.example.chen.easygo.MainActivity;
+import com.example.chen.easygo.R;
+import com.example.chen.easygo.net.Bean.JsonBaseBean;
+import com.example.chen.easygo.net.myHttp.DataManager;
+import com.example.chen.easygo.net.myHttp.HttpUrl;
+import com.example.chen.easygo.net.myHttp.MultipartRequest;
+import com.example.chen.easygo.net.myHttp.RObserver;
+import com.example.chen.easygo.utils.BitmapUtils;
+import com.example.chen.easygo.utils.CameraUtils;
+import com.example.chen.easygo.utils.Constance;
+import com.example.chen.easygo.utils.FileUtil;
+import com.example.chen.easygo.utils.L;
+import com.example.chen.easygo.utils.StringUtils;
+import com.example.chen.easygo.utils.ToastUtlis;
+import com.example.chen.easygo.utils.photo.CreatePictureDialog;
+import com.example.chen.easygo.utils.photo.PhotoChoose;
+import com.iflytek.cloud.thirdparty.S;
+import com.iflytek.cloud.thirdparty.T;
+
+import org.apache.http.client.HttpClient;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import pub.devrel.easypermissions.AppSettingsDialog;
+import pub.devrel.easypermissions.EasyPermissions;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
+
+public class RegisterActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks, CreatePictureDialog.ResultListener {
+
+    @BindView(R.id.name_re)
+    EditText nameRe;
+    @BindView(R.id.phone_re)
+    EditText phoneRe;
+    @BindView(R.id.msg_re)
+    EditText msgRe;
+    @BindView(R.id.get_msg_btn)
+    Button getMsgBtn;
+    @BindView(R.id.id_card_z_re)
+    ImageView idCardZRe;
+    @BindView(R.id.id_card_f_re)
+    ImageView idCardFRe;
+    @BindView(R.id.diver_card_re)
+    ImageView diverCardRe;
+    @BindView(R.id.diver_card_z_re)
+    ImageView diverCardZRe;
+    @BindView(R.id.diver_card_f_re)
+    ImageView diverCardFRe;
+    @BindView(R.id.car_re)
+    ImageView carRe;
+    @BindView(R.id.submit_re)
+    Button submitRe;
+
+    private static final String TAG = RegisterActivity.class.getSimpleName();
+    private File file;
+    private PhotoChoose photoChoose;
+    private CreatePictureDialog picture_dialog;
+    private static int postion = 0;
+    SaveBean saveBean;
+    private String identityCardFrontUrl = "";
+    private String identityCardReverseUrl = "";
+    private String driverLicenseFrontUrl = "";
+    private String driverLicenseReverseUrl = "";
+    private String drivingPermitFrontUrl = "";
+    private String drivingPermitReverseUrl = "";
+    private String faceCarUrl = "";
+
+    DataManager dataManager;
+    CompositeSubscription compositeSubscription;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+        //允许开启访问本地文件权限
+        requestWritePermission();
+        recoverState(savedInstanceState);
+        ButterKnife.bind(this);
+
+        initUI();
+        saveBean = new SaveBean();
+    }
+
+    private void initUI() {
+        compositeSubscription = new CompositeSubscription();
+    }
+
+    /**
+     * 恢复被系统销毁的数据
+     *
+     * @param savedInstanceState
+     */
+    private void recoverState(Bundle savedInstanceState) {
+        if (savedInstanceState != null) {
+            this.picturePath = savedInstanceState.getString(TAG);
+        }
+    }
+
+    private void requestWritePermission() {
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_EXTERNAL_STORAGE}, 2);
+        }
+
+    }
+
+    @OnClick({R.id.get_msg_btn, R.id.id_card_z_re, R.id.id_card_f_re, R.id.diver_card_re, R.id.diver_card_z_re, R.id.diver_card_f_re, R.id.car_re, R.id.submit_re})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.get_msg_btn:
+                getCode();
+                break;
+            case R.id.id_card_z_re:
+                showPictureDialog();
+                saveBean.setId(R.id.id_card_z_re);
+                break;
+            case R.id.id_card_f_re:
+                showPictureDialog();
+                saveBean.setId(R.id.id_card_f_re);
+                break;
+            case R.id.diver_card_re:
+                showPictureDialog();
+                saveBean.setId(R.id.diver_card_re);
+                break;
+            case R.id.diver_card_z_re:
+                showPictureDialog();
+                saveBean.setId(R.id.diver_card_z_re);
+                break;
+            case R.id.diver_card_f_re:
+                showPictureDialog();
+                saveBean.setId(R.id.diver_card_f_re);
+                break;
+            case R.id.car_re:
+                showPictureDialog();
+                saveBean.setId(R.id.car_re);
+                break;
+            case R.id.submit_re:
+                register();
+                break;
+        }
+    }
+
+    private void getCode() {
+//        String st=HttpUrl.SERVER_URL+http://10.20.126.239:8089/gwm_web/services/Api/LoginGet/DHJ/123456";//json接口
+//        Map<String, Object> map = new HashMap<>();
+//    HttpClient httpclient=new HttpClient(st, "GET", "JSON", map,handle);
+//        httpclient.start();
+        HashMap<String, String> map = new HashMap<>();
+        map.put("mobile", phoneRe.getText().toString());
+        map.put("type", "2");
+        dataManager = new DataManager(this, map);
+        String url = HttpUrl.SERVER_URL+"sms/code/"+phoneRe.getText().toString()+"/2";
+        compositeSubscription.add(dataManager.getCode(url)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RObserver<JsonBaseBean>(this, true) {
+                    @Override
+                    protected void onSuccess(JsonBaseBean jsonBaseBean) {
+
+                    }
+
+                    @Override
+                    protected void onError(String msg) {
+
+                    }
+                }));
+    }
+
+
+    /**
+     * 选择拍照或者图库的弹窗
+     */
+    private void showPictureDialog() {
+        if (picture_dialog == null) {
+            this.picture_dialog = new CreatePictureDialog(this);
+            this.picture_dialog.setResultListener(this);
+        }
+        if (!picture_dialog.isShowing()) {
+            picture_dialog.show();
+        }
+    }
+
+    private String picturePath;
+
+    @Override
+    public void camera() {
+        this.picturePath = FileUtil.getBitmapDiskFile(this.getApplicationContext());
+        CameraUtils.openCamera(this, Constance.PICTURE_CODE, this.picturePath);
+        dismissPictureDialog();
+    }
+
+    @Override
+    public void photoAlbum() {
+        CameraUtils.openGallery(this, Constance.GALLERY_CODE);
+        dismissPictureDialog();
+    }
+
+    private void dismissPictureDialog() {
+        if (picture_dialog != null && picture_dialog.isShowing()) {
+            picture_dialog.dismiss();
+        }
+    }
+
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+//        photoChoose.onActivityResult(requestCode, resultCode, data);
+        switch (requestCode) {
+            //当从软件设置界面，返回当前程序时候
+            case AppSettingsDialog.DEFAULT_SETTINGS_REQ_CODE:
+                break;
+            //拍照返回
+            case Constance.PICTURE_CODE:
+                if (resultCode == Activity.RESULT_OK) {
+                    loadPictureBitmap();
+                }
+                break;
+            //图库返回
+            case Constance.GALLERY_CODE:
+                if (resultCode == Activity.RESULT_OK) {
+                    Uri uri = data.getData();
+                    loadGalleryBitmap(uri);
+                }
+                break;
+            default:
+
+                break;
+        }
+
+    }
+
+    /**
+     * 图库返回
+     *
+     * @param uri
+     */
+    private void loadGalleryBitmap(Uri uri) {
+        String picturePath = CameraUtils.uriConvertPath(this, uri);
+        switch (saveBean.getId()) {
+            case R.id.id_card_z_re:
+                identityCardFrontUrl = picturePath;
+                setImageBitmap(picturePath, idCardZRe);
+                break;
+            case R.id.id_card_f_re:
+                identityCardReverseUrl = picturePath;
+                setImageBitmap(picturePath, idCardFRe);
+                break;
+            case R.id.diver_card_re:
+                driverLicenseFrontUrl = picturePath;
+                setImageBitmap(picturePath, diverCardRe);
+                break;
+            case R.id.diver_card_z_re:
+                driverLicenseReverseUrl = picturePath;
+                setImageBitmap(picturePath, diverCardZRe);
+                break;
+            case R.id.diver_card_f_re:
+                drivingPermitFrontUrl = picturePath;
+                setImageBitmap(picturePath, diverCardFRe);
+                break;
+            case R.id.car_re:
+                faceCarUrl = picturePath;
+                setImageBitmap(picturePath, carRe);
+                break;
+        }
+
+    }
+
+    private void setImageBitmap(String picturePath, ImageView imageView) {
+        Bitmap bitmap = BitmapUtils.decodeFileBitmap(this, picturePath, imageView.getWidth(), imageView.getHeight());
+        imageView.setImageBitmap(bitmap);
+    }
+
+    /**
+     * //拍照返回
+     */
+    private void loadPictureBitmap() {
+        Bitmap bitmap;
+        switch (saveBean.getId()) {
+            case R.id.id_card_z_re:
+                identityCardFrontUrl = picturePath;
+                bitmap = BitmapUtils.decodeFileBitmap(this, picturePath, idCardZRe.getWidth(), idCardZRe.getHeight());
+                idCardZRe.setImageBitmap(bitmap);
+                break;
+            case R.id.id_card_f_re:
+                identityCardReverseUrl = picturePath;
+                bitmap = BitmapUtils.decodeFileBitmap(this, picturePath, idCardFRe.getWidth(), idCardFRe.getHeight());
+                idCardFRe.setImageBitmap(bitmap);
+                break;
+            case R.id.diver_card_re:
+                driverLicenseFrontUrl = picturePath;
+                bitmap = BitmapUtils.decodeFileBitmap(this, picturePath, diverCardRe.getWidth(), diverCardRe.getHeight());
+                diverCardRe.setImageBitmap(bitmap);
+                break;
+            case R.id.diver_card_z_re:
+                drivingPermitFrontUrl = picturePath;
+                bitmap = BitmapUtils.decodeFileBitmap(this, picturePath, diverCardZRe.getWidth(), diverCardZRe.getHeight());
+                diverCardZRe.setImageBitmap(bitmap);
+                break;
+            case R.id.diver_card_f_re:
+                drivingPermitReverseUrl = picturePath;
+                bitmap = BitmapUtils.decodeFileBitmap(this, picturePath, diverCardFRe.getWidth(), diverCardFRe.getHeight());
+                diverCardFRe.setImageBitmap(bitmap);
+                break;
+            case R.id.car_re:
+                faceCarUrl = picturePath;
+                bitmap = BitmapUtils.decodeFileBitmap(this, picturePath, carRe.getWidth(), carRe.getHeight());
+                carRe.setImageBitmap(bitmap);
+                break;
+        }
+
+    }
+
+
+    private void register() {
+        HashMap<String, String> params = new HashMap<>();
+
+        params.put("driverName", nameRe.getText().toString());//司机姓名
+        params.put("mobile", phoneRe.getText().toString());// 手机号码
+        params.put("smscode", msgRe.getText().toString());//短信验证码
+
+
+        L.i("identityCardFrontUrl=" + identityCardFrontUrl);
+
+        params.put("identityCardFrontUrl", identityCardFrontUrl);//身份证正面
+        params.put("identityCardReverseUrl", identityCardReverseUrl);//身份证反面
+        params.put("driverLicenseFrontUrl", driverLicenseFrontUrl);//驾驶证正面
+        params.put("driverLicenseReverseUrl", driverLicenseReverseUrl);//驾驶证反面
+        params.put("drivingPermitFrontUrl", drivingPermitFrontUrl);//行驶证正面
+        params.put("personCardUrl", drivingPermitReverseUrl);//人证合照(手持身份证正面的半身照)
+        params.put("personCarUrl", "");//人证合照(手持身份证正面的半身照)
+        params.put("carBrand", "");//车品牌
+        params.put("carSeries", "");//车系
+
+        List<File> fileList = new ArrayList<>();
+        fileList.add(new File(identityCardFrontUrl));
+        fileList.add(new File(identityCardReverseUrl));
+        fileList.add(new File(driverLicenseFrontUrl));
+        fileList.add(new File(driverLicenseReverseUrl));
+        fileList.add(new File(drivingPermitFrontUrl));
+        fileList.add(new File(drivingPermitReverseUrl));
+        fileList.add(new File(faceCarUrl));
+
+        //组装partMap对象
+        Map<String, RequestBody> partMap = new HashMap<>();
+
+        for (int i = 0; i < fileList.size(); i++) {
+            L.i("filename=" + fileList.get(i).getName());
+            //创建 RequestBody，用于封装 请求RequestBody
+            RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"), fileList.get(i));
+            partMap.put("file\"; filename=\"" + fileList.get(i).getName() + "\"", requestFile);
+//            body = MultipartBody.Part.createFormData("theFile",file.getName(),requestFile);
+        }
+
+        for (Map.Entry<String, RequestBody> map : partMap.entrySet()) {
+            L.i("Key = " + map.getKey() + ", Value = " + map.getValue());
+        }
+
+        // 添加描述
+        String descriptionString = "hello, 这是文件描述";
+        RequestBody description =
+                RequestBody.create(
+                        MediaType.parse("multipart/form-data"), descriptionString);
+
+        DataManager dataManager = new DataManager(this, params);
+        CompositeSubscription compositeSubscription = new CompositeSubscription();
+        compositeSubscription.add(dataManager.uploadFile(params, description, partMap)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new RObserver<JsonBaseBean>(this, true) {
+                    @Override
+                    protected void onSuccess(JsonBaseBean jsonBaseBean) {
+                        if (jsonBaseBean.getCode() == 0) {
+                            ToastUtlis.show(RegisterActivity.this, "上传成功！");
+                        }
+                    }
+
+                    @Override
+                    protected void onError(String msg) {
+
+                    }
+                }));
+
+        startActivity(new Intent(this, MainActivity.class));
+    }
+
+
+    /**
+     * 上传图片到服务器
+     */
+    public void uploadFile(File file) {
+        HashMap<String, String> params = new HashMap<>();
+
+        params.put("driverName", nameRe.getText().toString());//司机姓名
+        params.put("mobile", phoneRe.getText().toString());// 手机号码
+        params.put("smscode", msgRe.getText().toString());//短信验证码
+
+        params.put("identityCardFrontUrl", identityCardFrontUrl);//身份证正面
+        params.put("identityCardReverseUrl", identityCardReverseUrl);//身份证反面
+        params.put("driverLicenseFrontUrl", driverLicenseFrontUrl);//驾驶证正面
+        params.put("driverLicenseReverseUrl", driverLicenseReverseUrl);//驾驶证反面
+        params.put("drivingPermitFrontUrl", drivingPermitFrontUrl);//行驶证正面
+        params.put("drivingPermitReverseUrl", drivingPermitReverseUrl);//行驶证反面
+        params.put("faceCarUrl", faceCarUrl);//人车合照
+
+        List<File> fileList = new ArrayList<>();
+        fileList.add(new File(identityCardFrontUrl));
+        fileList.add(new File(identityCardReverseUrl));
+        fileList.add(new File(driverLicenseFrontUrl));
+        fileList.add(new File(driverLicenseReverseUrl));
+        fileList.add(new File(drivingPermitFrontUrl));
+        fileList.add(new File(drivingPermitReverseUrl));
+        fileList.add(new File(faceCarUrl));
+
+
+        MultipartRequest request = new MultipartRequest(
+                HttpUrl.UPLOAD_URL,
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError volleyError) {
+                    }
+                },
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String s) {
+                        try {
+                            JSONObject object = new JSONObject(s);
+                            if (object.getString("success").equals(StringUtils.SUCCESS)) {
+//                                T.showShort(PhotoActivity.this, "上传成功！");
+//                                adapter.hideUpload(index,true);
+                            } else {
+//                                T.showShort(PhotoActivity.this, "上传失败！");
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                "theFile",
+                fileList,
+                params);
+        EasyGoApplication.mRequestQueue.add(request);
+    }
+
+
+    @Override
+    public void onPermissionsGranted(int requestCode, List<String> perms) {
+//        ToastUtils.showToast(getApplicationContext(), "用户授权成功");
+    }
+
+    @Override
+    public void onPermissionsDenied(int requestCode, List<String> perms) {
+
+    }
+}

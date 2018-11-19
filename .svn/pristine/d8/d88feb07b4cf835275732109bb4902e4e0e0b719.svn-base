@@ -1,0 +1,46 @@
+package com.example.chen.easygo.order;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.TextView;
+
+import com.example.chen.easygo.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
+public class PublishActivity extends AppCompatActivity {
+
+    @BindView(R.id.id_start_addr)
+    TextView idStartAddr;
+    @BindView(R.id.id_end_addr)
+    TextView idEndAddr;
+    @BindView(R.id.id_num)
+    TextView idNum;
+    @BindView(R.id.id_start_time)
+    TextView idStartTime;
+    @BindView(R.id.btn_publish)
+    Button btnPublish;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_publish);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick({R.id.id_end_addr, R.id.id_start_time, R.id.btn_publish})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.id_end_addr:
+                break;
+            case R.id.id_start_time:
+                break;
+            case R.id.btn_publish:
+                break;
+        }
+    }
+}

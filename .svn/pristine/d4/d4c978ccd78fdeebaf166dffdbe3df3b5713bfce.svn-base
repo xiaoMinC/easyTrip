@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/id_photo_popup_win"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/half_transparent">
+
+    <LinearLayout
+        android:id="@+id/id_ll_get_photo"
+        android:layout_width="match_parent"
+        android:layout_height="150dip"
+        android:layout_alignParentBottom="true"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/id_system_camera"
+            android:layout_width="match_parent"
+            android:layout_height="45dip"
+            android:background="@drawable/popup_item_selector"
+            android:gravity="center"
+            android:padding="10dip"
+            android:singleLine="true"
+            android:text="拍照"
+            android:textColor="#3f3f3f"
+            android:textSize="16.0dip" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/view_line" />
+
+        <TextView
+            android:id="@+id/id_system_photo"
+            android:layout_width="match_parent"
+            android:layout_height="45dip"
+            android:background="@drawable/popup_item_selector"
+            android:gravity="center"
+            android:padding="10dip"
+            android:singleLine="true"
+            android:text="从手机相册选择"
+            android:textColor="#3f3f3f"
+            android:textSize="16.0dip" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="10dip"
+            android:background="@color/view_line" />
+
+        <TextView
+            android:id="@+id/id_take_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="45dip"
+            android:background="@drawable/popup_item_selector"
+            android:gravity="center"
+            android:padding="10dip"
+            android:singleLine="true"
+            android:text="取消"
+            android:textColor="#3f3f3f"
+            android:textSize="16.0dip" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dip"
+            android:background="@color/view_line" />
+
+    </LinearLayout>
+</RelativeLayout>

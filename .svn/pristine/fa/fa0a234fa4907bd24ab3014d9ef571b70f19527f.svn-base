@@ -1,0 +1,76 @@
+package com.example.chen.easygo.order;
+
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.example.chen.easygo.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+
+/**
+ * 订单栏
+ * Created by Chen on 2018/10/8.
+ */
+
+public class OrderFragment extends Fragment {
+
+    @BindView(R.id.tv_service_num)
+    TextView tvServiceNum;
+    @BindView(R.id.tv_week_liuShui)
+    TextView tvWeekLiuShui;
+    @BindView(R.id.tv_week_num)
+    TextView tvWeekNum;
+    @BindView(R.id.ll_order_head)
+    LinearLayout llOrderHead;
+    @BindView(R.id.lv_order)
+    ListView lvOrder;
+    @BindView(R.id.btn_mode)
+    Button btnMode;
+    @BindView(R.id.btn_publish)
+    Button btnPublish;
+    @BindView(R.id.btn_over)
+    Button btnOver;
+    Unbinder unbinder;
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.order_fragment, container, false);
+        initView(view);
+        unbinder = ButterKnife.bind(this, view);
+        return view;
+    }
+
+    private void initView(View view) {
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+    @OnClick({R.id.btn_mode, R.id.btn_publish, R.id.btn_over})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.btn_mode:
+                break;
+            case R.id.btn_publish:
+                break;
+            case R.id.btn_over:
+                break;
+        }
+    }
+}

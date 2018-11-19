@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/weigrey"
+    tools:context=".order.GetPassengerActivity">
+
+    <include layout="@layout/title_bar" />
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/passenger_map"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+    </com.amap.api.maps.MapView>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:onClick="jump"
+        android:text="跳转"
+        android:visibility="gone" />
+
+    <include
+        android:background="@color/weigrey"
+        layout="@layout/loading_order_item" />
+
+
+    <com.example.chen.easygo.common.swipebtn.SwipeButton
+        android:id="@+id/swipeNoState"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        app:button_background="@drawable/shape_button_squared"
+        app:button_bottom_padding="18dp"
+        app:button_image_disabled="@drawable/ic_lock_open_black_24dp"
+        app:button_image_enabled="@drawable/ic_lock_outline_black_24dp"
+        app:button_left_padding="18dp"
+        app:button_right_padding="18dp"
+        app:button_top_padding="18dp"
+        app:button_trail_enabled="true"
+        app:has_activate_state="true"
+        app:initial_state="disabled"
+        app:inner_text="右滑接该乘客"
+        app:inner_text_background="@drawable/shape_squared"
+        app:inner_text_bottom_padding="18dp"
+        app:inner_text_color="@android:color/white"
+        app:inner_text_size="16sp"
+        app:inner_text_top_padding="18dp" />
+
+
+</LinearLayout>

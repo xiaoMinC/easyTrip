@@ -1,0 +1,255 @@
+package com.example.chen.easygo.utils.photo;
+
+import android.Manifest;
+import android.annotation.TargetApi;
+import android.app.Activity;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.net.Uri;
+import android.os.Build;
+import android.provider.MediaStore;
+import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.View;
+import android.widget.Toast;
+
+
+import com.example.chen.easygo.R;
+import com.example.chen.easygo.utils.FileUtil;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
+
+/**
+ * Created by Administrator on 2017/7/11 0011.
+ */
+
+public class PhotoChoose {
+    private PhotoPopupWindow popupWin;
+    private final int CAMERA_PERMISSION = 103;
+    private final int PICTURE = 101;
+    private final int CAMERA = 102;
+    private final int WRITE_SD_PERMISSION = 100;
+    private File imageFile;
+    private OnResultListener onResultListener;
+    private Activity mActivity;
+    private Bitmap bm;
+
+    public PhotoChoose(Activity activity) {
+        this.mActivity = activity;
+        photoPopupWindow();
+    }
+
+    public void photoPopupWindow() {
+        popupWin = new PhotoPopupWindow(mActivity, new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int viewid = v.getId();
+//                Intent intent;
+                switch (viewid) {
+                    case R.id.id_system_camera:
+//                        intent = new Intent(mActivity, SelectImageActivity.class);
+//                        intent.putExtra(SelectImageActivity.EXTRA, SelectImageActivity.OPENCAMERA);
+//                        mActivity.startActivityForResult(intent, SelectImageActivity.OPENCAMERA);
+//                        popupWin.dismiss();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            hasPerCamera();
+                        } else {
+                            Toast.makeText(mActivity, "拍照", Toast.LENGTH_LONG).show();
+                            createDestImageFile();
+//                            savePic("");
+                            Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+                            camera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
+                            mActivity.startActivityForResult(camera, CAMERA);
+                            popupWin.dismiss();
+                        }
+                        break;
+                    case R.id.id_system_photo:
+//                        intent = new Intent(mActivity, SelectImageActivity.class);
+//                        intent.putExtra(SelectImageActivity.EXTRA, SelectImageActivity.OPENALBUM);
+//                        mActivity.startActivityForResult(intent, SelectImageActivity.OPENALBUM);
+//                        popupWin.dismiss();
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            hasPerEX();
+                        } else {
+                            //选择相册
+                            Intent intent = new Intent(Intent.ACTION_PICK, null);
+                            intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+                            mActivity.startActivityForResult(intent, PICTURE);
+                            popupWin.dismiss();
+                        }
+                        break;
+                    case R.id.id_take_cancel:
+                        popupWin.dismiss();
+                        break;
+                }
+            }
+        });
+        popupWin.showAtLocation(mActivity.findViewById(R.id.ll_add_photo), Gravity.BOTTOM, 0, 0);
+        popupWin.update();
+    }
+
+    /**
+     * 判断权限
+     */
+    @TargetApi(23)
+    private void hasPerCamera() {
+        int hasWriteContactsPermission = mActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        int carmraPermission = mActivity.checkSelfPermission(Manifest.permission.CAMERA);
+        if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED || carmraPermission != PackageManager.PERMISSION_GRANTED) {
+            mActivity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA}, CAMERA_PERMISSION);
+            return;
+        }
+//        savePic("");
+        createDestImageFile();
+        Intent camera = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        camera.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(imageFile));
+        mActivity.startActivityForResult(camera, CAMERA);
+        popupWin.dismiss();
+    }
+
+    @TargetApi(23)
+    private void hasPerEX() {
+        int hasWriteContactsPermission = mActivity.checkSelfPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        if (hasWriteContactsPermission != PackageManager.PERMISSION_GRANTED) {
+            mActivity.requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, WRITE_SD_PERMISSION);
+            return;
+        }
+        //选择相册
+        Intent intent = new Intent(Intent.ACTION_PICK, null);
+        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
+        mActivity.startActivityForResult(intent, PICTURE);
+        popupWin.dismiss();
+    }
+
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_OK) {
+            switch (requestCode) {
+                case CAMERA:
+                    System.out.println("调用imageFile:" + resultCode + ";" + imageFile.getAbsolutePath());
+                    if (resultCode == Activity.RESULT_OK) {
+//                        savePic("");
+
+                    }
+                    break;
+                case PICTURE:
+                    if (resultCode == Activity.RESULT_OK && null != data) {
+                        Uri uri = data.getData();
+                        if (!TextUtils.isEmpty(uri.getAuthority())) {
+                            //查询选择图片
+                            Cursor cursor = mActivity.getContentResolver().query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+                            //返回没找到选择图片
+                            if (null == cursor) return;
+                            //光标移动至开头 获取图片路径
+                            cursor.moveToFirst();
+                            String tempImage = cursor.getString(cursor.getColumnIndex(MediaStore.Images.Media.DATA));
+                            InputStream fis = null;
+                            OutputStream fos = null;
+//                            savePic("");
+                            createDestImageFile();
+                            try {
+                                fis = new FileInputStream(tempImage);
+                                fos = new FileOutputStream(imageFile);
+                                int i;
+                                byte[] temp = new byte[1024];
+                                while ((i = fis.read(temp)) != -1) {
+                                    fos.write(temp, 0, i);
+                                }
+                                fos.flush();
+                                System.out.println("调用imageFile:" + imageFile.getAbsolutePath());
+//                            displayImage(imageFile);
+                            } catch (Exception e) {
+                            } finally {
+                                try {
+                                    fos.close();
+                                    fis.close();
+                                } catch (IOException e) {
+                                }
+                            }
+                        }
+                    }
+                    break;
+            }
+        }else {
+            imageFile = null;
+        }
+
+//        if (data != null) {
+//            if (requestCode == SelectImageActivity.OPENCAMERA
+//                    || requestCode == SelectImageActivity.OPENALBUM) {
+//                String url = data.getStringExtra(SelectImageActivity.IMAGEURL);
+////                ivImage.setImageBitmap(BitmapFactory.decodeFile(url));
+//                imageFile = new File(url);
+//
+//            }
+//        }
+        if (onResultListener != null) {
+            onResultListener.onResult(imageFile,"");
+        }
+
+
+    }
+
+
+    /**
+     * 结果监听
+     */
+    public interface OnResultListener {
+        void onResult(File imageFile,String url);
+    }
+
+    /**
+     * 设置结果监听
+     *
+     * @param onResultListener
+     */
+    public void setOnResultListener(OnResultListener onResultListener) {
+        this.onResultListener = onResultListener;
+    }
+
+    /**
+     * 结束处理
+     */
+    public void onDestroy() {
+        onResultListener = null;
+        mActivity = null;
+    }
+
+
+
+    //生成目标临时文件
+    public void createDestImageFile() {
+        try {
+            File dirs = new File(FileUtil.getImageCache());
+            if (!dirs.exists()) {
+                dirs.mkdir();
+            }
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            System.out.println("创建目录:" + dirs.canWrite());
+            imageFile = new File(dirs.getPath() + File.separator + timeStamp + ".png");
+
+            System.out.println("imageFile:" + imageFile.getAbsolutePath());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
+
+
+}

@@ -1,0 +1,17 @@
+package com.example.chen.easygo.net.myHttp;
+
+/**
+ * Created by Administrator on 2018/2/27 0027.
+ */
+
+public class BaseResponse {
+    private String resultCode;
+
+    public String getResultCode() {
+        return resultCode;
+    }
+
+    public void setResultCode(String resultCode) {
+        this.resultCode = resultCode;
+    }
+}

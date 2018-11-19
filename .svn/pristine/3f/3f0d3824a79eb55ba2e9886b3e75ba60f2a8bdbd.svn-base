@@ -1,0 +1,146 @@
+package com.example.chen.easygo.order;
+
+import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
+import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
+import android.text.format.DateUtils;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import com.example.chen.easygo.MainActivity;
+import com.example.chen.easygo.R;
+import com.example.chen.easygo.order.fragment.PassengerFragment;
+import com.example.chen.easygo.order.fragment.ShishiFragment;
+import com.handmark.pulltorefresh.library.PullToRefreshBase;
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import butterknife.Unbinder;
+import info.hoang8f.android.segmented.SegmentedGroup;
+
+/**
+ * 订单栏
+ * Created by Chen on 2018/10/8.
+ */
+
+public class OrderFragment extends Fragment {
+
+    @BindView(R.id.tv_service_num)
+    TextView tvServiceNum;
+    @BindView(R.id.tv_week_liuShui)
+    TextView tvWeekLiuShui;
+    @BindView(R.id.tv_week_num)
+    TextView tvWeekNum;
+    @BindView(R.id.ll_order_head)
+    LinearLayout llOrderHead;
+
+    RadioButton rbOne;
+    RadioButton rbTwo;
+    SegmentedGroup rg;
+    LinearLayout llContent;
+    Unbinder unbinder;
+
+
+
+    private ShishiFragment mShishiFragment;
+    private PassengerFragment mPassengerFragment;
+
+
+    public OrderFragment() {
+
+    }
+
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.order_fragment, container, false);
+        initView(view);
+        unbinder = ButterKnife.bind(this, view);
+
+        return view;
+    }
+
+    private void initView(View view) {
+        llContent = (LinearLayout) view.findViewById(R.id.ll_content);
+        rbOne = (RadioButton) view.findViewById(R.id.rb_one);
+        rbTwo = (RadioButton) view.findViewById(R.id.rb_two);
+        rg = (SegmentedGroup) view.findViewById(R.id.rg);
+        rbOne = (RadioButton) rg.getChildAt(0);
+        rbOne.setChecked(true);
+        showFragments(1);
+
+        rg.setOnCheckedChangeListener(areaCheck);
+        areaCheck.onCheckedChanged(null, 0);
+
+
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
+    }
+
+
+    RadioGroup.OnCheckedChangeListener areaCheck = new RadioGroup.OnCheckedChangeListener() {
+        @Override
+        public void onCheckedChanged(RadioGroup radioGroup, int checkedId) {
+            switch (checkedId) {
+                case R.id.rb_one:
+                    showFragments(1);
+                    break;
+                case R.id.rb_two:
+                    showFragments(2);
+                    break;
+                default:
+            }
+        }
+    };
+
+    private void showFragments(int num) {
+        FragmentTransaction mTransaction = getChildFragmentManager().beginTransaction();
+        hideFragments(mTransaction);
+        switch (num) {
+            case 1:
+                if (mShishiFragment != null) {
+                    mTransaction.show(mShishiFragment);
+                } else {
+                    mShishiFragment = new ShishiFragment();
+                    mTransaction.add(R.id.ll_content, mShishiFragment);
+                }
+                break;
+            case 2:
+                if (mPassengerFragment != null) {
+                    mTransaction.show(mPassengerFragment);
+                } else {
+                    mPassengerFragment = new PassengerFragment();
+                    mTransaction.add(R.id.ll_content, mPassengerFragment);
+                }
+                break;
+        }
+        mTransaction.commit();
+    }
+
+    private void hideFragments(FragmentTransaction mTransaction) {
+        if (mShishiFragment != null)
+            mTransaction.hide(mShishiFragment);
+        if (mPassengerFragment != null)
+            mTransaction.hide(mPassengerFragment);
+    }
+
+}

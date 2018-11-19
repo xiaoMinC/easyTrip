@@ -1,0 +1,14 @@
+package com.example.chen.easygo.net.myHttp;
+
+/**
+ * 三期新接口
+ * Created by Administrator on 2018/1/2 0002.
+ */
+
+public class HttpUrl {
+    public static String SERVER_URL = "http://122.152.222.180:8999/aqsc/";
+//    public static String SERVER_URL = "http://110.80.10.110:8084/aqsc/";//厦门培训服务器
+//    public static String SERVER_URL = "http://218.77.41.192/aqsc/";//正式服务器
+
+
+}

@@ -1,0 +1,40 @@
+package com.example.chen.easygo.utils;
+
+import android.os.Environment;
+
+import java.io.File;
+
+public class FileUtil {
+
+	
+	// SDCard路径
+	public static final String SD_PATH = Environment.getExternalStorageDirectory().getAbsolutePath();
+		// 图片存储路径
+	public static final String BASE_PATH = SD_PATH + "/hnsafe/apk/";
+		// 缓存图片路径
+   public static final String BASE_IMAGE_CACHE = BASE_PATH + "cache/";
+   
+	public static String getSDpath() {
+		boolean sdCardExist = Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED);
+		if (sdCardExist) {
+			File f = Environment.getExternalStorageDirectory();
+			return f.getPath();
+		}
+		return "";
+	}
+
+	public static boolean existSD() {
+		boolean sdCardExist = Environment.getExternalStorageState().equals(
+				Environment.MEDIA_MOUNTED);
+		return sdCardExist;
+	}
+	public static String getImageCache(){
+		File dir = new File(BASE_IMAGE_CACHE);
+		if (!dir.exists()) {
+			dir.mkdirs();
+		}
+		return BASE_IMAGE_CACHE;
+	}
+
+}

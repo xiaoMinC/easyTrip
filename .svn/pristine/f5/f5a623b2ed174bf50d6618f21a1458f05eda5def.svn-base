@@ -1,0 +1,193 @@
+package com.example.chen.easygo.utils.photo;
+
+import android.content.Context;
+import android.net.Uri;
+import android.support.v7.widget.RecyclerView;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.shunan.app.R;
+
+import java.io.File;
+import java.util.List;
+
+/**
+ * Created by Administrator on 2018/4/17 0017.
+ */
+
+public class RecycleAdapter extends RecyclerView.Adapter<RecycleAdapter.MyViewHolder> {
+
+
+    private Context context;
+    private List<String> list;
+
+    private buttonClickListener listener;
+    private ChooseClickListener chooseListener;
+    private SaveEditListener saveListener;
+    private File mFile;
+    private int index;
+    private int uploadIndex;
+
+    private Boolean mHide = false;
+
+
+    public RecycleAdapter(Context context, List<String> list) {
+        this.context = context;
+        this.list = list;
+    }
+
+    @Override
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        MyViewHolder holder = new MyViewHolder(LayoutInflater.from(
+                context).inflate(R.layout.load_photo_item, parent,
+                false));
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        holder.brnUpload.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (listener != null)
+                    listener.buttonClick(position);
+            }
+        });
+        holder.brnUpload.setTag(position);
+        if (uploadIndex == position && mHide){
+            holder.brnUpload.setVisibility(View.GONE);
+        }else {
+            holder.brnUpload.setVisibility(View.VISIBLE);
+        }
+
+        holder.tvPhotoContainer.setTag(position);
+        holder.tvPhotoContainer.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (chooseListener != null)
+                    chooseListener.click(position);
+            }
+        });
+
+        //添加editText的监听事件
+        holder.tvDesc.addTextChangedListener(new TextSwitcher(holder));
+        //通过设置tag，防止position紊乱
+        holder.tvDesc.setTag(position);
+
+        if (mFile != null) {
+            if (position == index) {
+                holder.tvHint.setVisibility(View.GONE);
+                holder.tvPhotoContainer.setImageURI(Uri.fromFile(mFile));
+            }
+
+        }
+
+
+    }
+
+    //  添加数据
+    public void addData(int position) {
+        //在list中添加数据，并通知条目加入一条
+        list.add(position, "" + position);
+        //添加动画
+        notifyItemInserted(position);
+    }
+
+    // 上传成功隐藏上传按钮
+    public void hideUpload(int position,Boolean hide) {
+        uploadIndex = position;
+        mHide = hide;
+    }
+
+    public void displayImage(File file, int position) {
+        if (file != null) {
+            this.mFile = file;
+            this.index = position;
+        }
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    public void setButtonClickListener(buttonClickListener listener) {
+        this.listener = listener;
+    }
+
+    public void setChooseClickListener(ChooseClickListener listener) {
+        this.chooseListener = listener;
+    }
+
+    public void setSaveEditListener(SaveEditListener listener) {
+        this.saveListener = listener;
+    }
+
+    public interface buttonClickListener {
+        void buttonClick(int position);
+    }
+
+    public interface ChooseClickListener {
+        void click(int position);
+    }
+
+    public interface SaveEditListener {
+        void SaveEdit(int position, String string);
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+
+        ImageView tvPhotoContainer;
+        TextView tvHint;
+        EditText tvDesc;
+        Button brnUpload;
+
+        public MyViewHolder(View view) {
+            super(view);
+
+            tvPhotoContainer = (ImageView) view.findViewById(R.id.tv_photo_container);
+            tvHint = (TextView) view.findViewById(R.id.tv_hint);
+            tvDesc = (EditText) view.findViewById(R.id.tv_desc);
+            brnUpload = (Button) view.findViewById(R.id.brn_upload);
+        }
+    }
+
+    //自定义EditText的监听类
+    class TextSwitcher implements TextWatcher {
+
+        private MyViewHolder mHolder;
+
+        public TextSwitcher(MyViewHolder mHolder) {
+            this.mHolder = mHolder;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            //用户输入完毕后，处理输入数据，回调给主界面处理
+            if (s != null) {
+                saveListener.SaveEdit(Integer.parseInt(mHolder.tvDesc.getTag().toString()), s.toString());
+            }
+
+        }
+    }
+
+
+}

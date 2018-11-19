@@ -1,0 +1,11 @@
+package com.example.chen.easygo.map.localtion;
+
+import com.amap.api.location.AMapLocation;
+
+public interface ILocal {
+    void startLocation();
+
+    void stopLocation();
+
+    AMapLocation getLocalInfo();
+}

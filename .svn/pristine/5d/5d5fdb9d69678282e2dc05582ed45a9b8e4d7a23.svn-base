@@ -1,0 +1,33 @@
+package com.example.chen.easygo.me;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import com.example.chen.easygo.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+/**
+ * 行程记录
+ */
+public class DiverRecordActivity extends Activity {
+
+    @BindView(R.id.tv_num_dr)
+    TextView tvNumDr;
+    @BindView(R.id.tv_dan_num_dr)
+    TextView tvDanNumDr;
+    @BindView(R.id.tv_month)
+    TextView tvMonth;
+    @BindView(R.id.lv_dr)
+    ListView lvDr;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_dirver_record);
+        ButterKnife.bind(this);
+    }
+}

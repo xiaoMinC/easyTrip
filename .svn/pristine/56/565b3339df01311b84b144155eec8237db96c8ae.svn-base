@@ -1,0 +1,122 @@
+package com.example.chen.easygo.net.myHttp;
+
+
+import com.example.chen.easygo.net.Bean.JsonBaseBean;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import retrofit2.http.GET;
+import retrofit2.http.Multipart;
+import retrofit2.http.POST;
+import retrofit2.http.Part;
+import retrofit2.http.PartMap;
+import retrofit2.http.QueryMap;
+import rx.Observable;
+
+/**
+ * 设置请求地址及请求方式
+ * Created by win764-1 on 2016/12/12.
+ */
+
+public interface RetrofitService {
+
+    //司机登录
+    @POST("driver/sms/login")
+    Observable<JsonBaseBean> login(@QueryMap HashMap<String, String> mMap);
+
+    //获取验证码
+    @POST("sms/code/")
+    Observable<JsonBaseBean> getCode(@QueryMap HashMap<String, String> mMap);
+
+    //注册上传图片
+    @Multipart
+    @POST("driver/register/")
+    Observable<JsonBaseBean> uploadFile1(@QueryMap Map<String, String> options, @Part("description") RequestBody description,
+                                        @Part MultipartBody.Part file);
+
+    //注册多张图片
+    @Multipart
+    @POST("driver/register/")
+    Observable<JsonBaseBean> uploadFile(@QueryMap Map<String, String> options,
+                                        @Part("description") RequestBody description,
+                                        @PartMap() Map<String, RequestBody> bodys);
+
+
+    //个人中心
+    @GET("driver/profile/center/")
+    Observable<JsonBaseBean> personCenter(@QueryMap HashMap<String, String> mMap);
+
+
+    //司机头像上传
+    @Multipart
+    @POST("driver/headicon/")
+    Observable<JsonBaseBean> driverIcon(@QueryMap Map<String, String> options, @Part("description") RequestBody description,
+                                        @Part MultipartBody.Part file);
+
+    //司机个人资料
+    @GET("driver/profile/info/")
+    Observable<JsonBaseBean> driverInfo(@QueryMap HashMap<String, String> mMap);
+
+
+    //司机申诉服务
+    @POST("driver/appeal/")
+    Observable<JsonBaseBean> driverAppeal(@QueryMap HashMap<String, String> mMap);
+
+    //司机月度总结
+    @POST("driver/month/summary/")
+    Observable<JsonBaseBean> driverMonth(@QueryMap HashMap<String, String> mMap);
+
+    // 周边搜索
+    @POST("travel/place/search/")
+    Observable<JsonBaseBean> search(@QueryMap HashMap<String, String> mMap);
+
+    // 司机接单
+    @POST("travel/driver/receive")
+    Observable<JsonBaseBean> driverReceive(@QueryMap HashMap<String, String> mMap);
+
+    // 最后位置上传
+    @POST("profile/position/")
+    Observable<JsonBaseBean> loadPosition(@QueryMap HashMap<String, String> mMap);
+
+    // 司机查看顺路行程
+    @POST("driver/travel/directroute/")
+    Observable<JsonBaseBean> directRoute(@QueryMap HashMap<String, String> mMap);
+
+    // 司机查看本次顺路行程已接乘客
+    @POST("driver/travel/already/receive")
+    Observable<JsonBaseBean> alreadyReceive(@QueryMap HashMap<String, String> mMap);
+
+    // 司机发布行程
+    @POST("driver/travel/publish")
+    Observable<JsonBaseBean> publishTravel(@QueryMap HashMap<String, String> mMap);
+
+    // 司机呼叫安全模式
+    @POST("driver/travel/call/safemode")
+    Observable<JsonBaseBean> safeMode(@QueryMap HashMap<String, String> mMap);
+
+    // 司机前往乘客地点接乘
+    @POST("driver/travel/relay")
+    Observable<JsonBaseBean> travelRelay(@QueryMap HashMap<String, String> mMap);
+
+    // 取消乘客行程
+    @POST("driver/travel/cancel")
+    Observable<JsonBaseBean> travelCancel(@QueryMap HashMap<String, String> mMap);
+
+    // 确认提醒乘客已上车
+    @POST("driver/travel/remind")
+    Observable<JsonBaseBean> travelRemind(@QueryMap HashMap<String, String> mMap);
+
+    // 确认抵达目的地
+    @POST("driver/travel/arrival")
+    Observable<JsonBaseBean> travelArrival(@QueryMap HashMap<String, String> mMap);
+
+    // 司机提交行程问题
+    @POST("driver/travel/problem")
+    Observable<JsonBaseBean> travelProblem(@QueryMap HashMap<String, String> mMap);
+
+}
+
+

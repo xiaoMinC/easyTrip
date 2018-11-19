@@ -1,0 +1,30 @@
+package com.example.chen.easygo.me;
+
+import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
+import android.widget.TextView;
+
+import com.example.chen.easygo.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+/**
+ * 月度总结
+ */
+public class MonthSummaryActivity extends AppCompatActivity {
+
+    @BindView(R.id.tv_service_num_ms)
+    TextView tvServiceNumMs;
+    @BindView(R.id.bill_ms)
+    TextView billMs;
+    @BindView(R.id.textView8)
+    TextView textView8;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_month_summary);
+        ButterKnife.bind(this);
+    }
+}

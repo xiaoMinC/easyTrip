@@ -1,0 +1,58 @@
+package com.example.chen.easygo.order;
+
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
+import com.example.chen.easygo.BaseActivity;
+import com.example.chen.easygo.R;
+import com.example.chen.easygo.common.swipebtn.OnStateChangeListener;
+import com.example.chen.easygo.common.swipebtn.SwipeButton;
+import com.example.chen.easygo.map.GPSNaviActivity;
+import com.example.chen.easygo.map.myCustom.AllCustomNaviActivity;
+import com.example.chen.easygo.utils.ToActivityUtil;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+public class GetPassengerActivity extends BaseActivity {
+
+    @BindView(R.id.swipeNoState)
+    SwipeButton swipeNoState;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_get_passenger);
+        ButterKnife.bind(this);
+
+        initView();
+    }
+
+    private void initView() {
+        setTitleBar("乘客行程");
+        initBackView();
+
+        swipeNoState.setOnStateChangeListener(new OnStateChangeListener() {
+            @Override
+            public void onStateChange(boolean active) {
+                if (active) {
+                    swipeNoState.setText("");
+                    ToActivityUtil.toNextActivity(GetPassengerActivity.this, GPSNaviActivity.class);
+//                    Toast.makeText(LoadingOrderActivity.this, "State: " + active, Toast.LENGTH_SHORT).show();
+                } else {
+                    swipeNoState.setText("右滑接该乘客");
+//                    Toast.makeText(LoadingOrderActivity.this, "State: " + active, Toast.LENGTH_SHORT).show();
+
+                }
+            }
+        });
+
+    }
+
+
+    public void jump(View view) {
+        ToActivityUtil.toNextActivity(GetPassengerActivity.this, AllCustomNaviActivity.class);
+    }
+}

@@ -1,0 +1,71 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+
+
+
+    <style name="infoEditText_style">
+        <item name="android:gravity">center|start</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:textSize">14sp</item>
+        <item name="android:background">@drawable/input_corner_style</item>
+        <item name="android:padding">7dp</item>
+    </style>
+
+
+    <style name="infoTextView_style">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginTop">5dp</item>
+        <item name="android:textSize">@dimen/field_size</item>
+    </style>
+
+    <!-- panel 容器样式 -->
+    <style name="fieldset_style">
+        <item name="android:background">@drawable/fieldset_white_corner</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:paddingBottom">5dip</item>
+        <item name="android:layout_marginTop">5dip</item>
+    </style>
+
+    <!-- 输入框样式 -->
+    <style name="input_style">
+        <item name="android:background">@drawable/input_corner_style</item>
+        <item name="android:padding">7dp</item>
+    </style>
+
+    <style name="ShareDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowNoTitle">true</item><!--除去title-->
+        <item name="android:windowIsFloating">true</item><!--表示浮在屏幕上的，如果在这里使用了，整个layout就会在 屏幕中心，相当于浮在屏幕上，所以这个只适用于dialog-->
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:backgroundDimEnabled">true</item>
+    </style>
+
+
+
+</resources>

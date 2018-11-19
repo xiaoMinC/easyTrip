@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="60dip"
+    android:background="@color/dark_green"
+    android:orientation="vertical">
+
+    <ImageButton
+        android:padding="10dp"
+        android:id="@+id/id_backview"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:layout_alignParentLeft="true"
+        android:layout_centerInParent="true"
+        android:layout_marginLeft="15dip"
+        android:background="@drawable/back_btn_selector"
+        android:scaleType="centerInside" />
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="首页"
+        android:textColor="@color/white"
+        android:textSize="@dimen/title_bar_size" />
+
+    <TextView
+        android:id="@+id/id_locationview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="15dip"
+        android:layout_toRightOf="@id/id_backview"
+        android:drawableLeft="@drawable/map_near"
+        android:drawablePadding="4dip"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/location_size"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/id_rightview"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_centerInParent="true"
+        android:layout_marginRight="10dp"
+        android:paddingRight="10dp"
+        android:textColor="@color/white"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -1,0 +1,179 @@
+package com.example.chen.easygo;
+
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+
+import com.example.chen.easygo.net.myHttp.DataManager;
+import com.example.chen.easygo.utils.FileUtil;
+import com.example.chen.easygo.utils.L;
+import com.example.chen.easygo.utils.photo.PhotoChoose;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.util.HashMap;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.RequestBody;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
+
+public class RegisterActivity extends BaseActivity {
+
+    @BindView(R.id.name_re)
+    EditText nameRe;
+    @BindView(R.id.phone_re)
+    EditText phoneRe;
+    @BindView(R.id.msg_re)
+    EditText msgRe;
+    @BindView(R.id.get_msg_btn)
+    Button getMsgBtn;
+    @BindView(R.id.id_card_z_re)
+    ImageView idCardZRe;
+    @BindView(R.id.id_card_f_re)
+    ImageView idCardFRe;
+    @BindView(R.id.diver_card_re)
+    ImageView diverCardRe;
+    @BindView(R.id.diver_card_z_re)
+    ImageView diverCardZRe;
+    @BindView(R.id.diver_card_f_re)
+    ImageView diverCardFRe;
+    @BindView(R.id.car_re)
+    ImageView carRe;
+    @BindView(R.id.submit_re)
+    Button submitRe;
+
+    private File file;
+    private PhotoChoose photoChoose;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+        ButterKnife.bind(this);
+    }
+
+    @OnClick({R.id.get_msg_btn, R.id.id_card_z_re, R.id.id_card_f_re, R.id.diver_card_re, R.id.diver_card_z_re, R.id.diver_card_f_re, R.id.car_re, R.id.submit_re})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.get_msg_btn:
+                break;
+            case R.id.id_card_z_re:
+                photoChoose = new PhotoChoose(this);
+                photoChoose.setOnResultListener(new PhotoChoose.OnResultListener() {
+                    @Override
+                    public void onResult(File imageFile) {
+                        L.i("imageFile:" + imageFile);
+                        if (imageFile != null) {
+                            savePic(imageFile);
+                            file = imageFile;
+
+//                            adapter.displayImage(imageFile,position);
+//                            adapter.notifyDataSetChanged();
+                        }
+
+                    }
+                });
+                break;
+            case R.id.id_card_f_re:
+                break;
+            case R.id.diver_card_re:
+                break;
+            case R.id.diver_card_z_re:
+                break;
+            case R.id.diver_card_f_re:
+                break;
+            case R.id.car_re:
+                break;
+            case R.id.submit_re:
+                register();
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        photoChoose.onActivityResult(requestCode, resultCode, data);
+
+    }
+
+    /**
+     * 保存图片
+     *
+     * @param
+     */
+    private void savePic(File f) {
+        File rootFile = new File(FileUtil.getImageCache());
+        if (!rootFile.exists()) {
+            rootFile.mkdirs();
+        }
+        Bitmap bm = BitmapFactory.decodeFile(f.getAbsolutePath());
+        try {
+            FileOutputStream fos = new FileOutputStream(f);
+//			FileInputStream fis = new FileInputStream(new File(tempPicPath)) ;
+            byte[] temp = new byte[1024];
+            //添加时间水印
+//            Bitmap newbm = addTimeFlag(bm);
+//            newbm.compress(Bitmap.CompressFormat.JPEG, 100, fos);// 把数据写入文件
+            fos.flush();
+            fos.close();
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+    }
+
+
+    private void register() {
+        HashMap<String, String> params = new HashMap<>();
+//        params.put("uuid", UserLoginUtil.getUUID());
+//        params.put("writ_id", writ_id);
+//        params.put("writ_type", writ_type);
+//        params.put("remarks", remark);
+
+        // 创建 RequestBody，用于封装 请求RequestBody
+        RequestBody requestFile = RequestBody.create(MediaType.parse("multipart/form-data"),file);
+
+        MultipartBody.Part body = MultipartBody.Part.createFormData("theFile",file.getName(),requestFile);
+        // 添加描述
+        String descriptionString = "hello, 这是文件描述";
+        RequestBody description =
+                RequestBody.create(
+                        MediaType.parse("multipart/form-data"), descriptionString);
+
+        DataManager dataManager = new DataManager(this,params);
+        CompositeSubscription compositeSubscription = new CompositeSubscription();
+//        compositeSubscription.add(dataManager.uploadFile(params,description,body)
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new RObserver<JsonBaseBean>(this,true) {
+//                    @Override
+//                    protected void onSuccess(JsonBaseBean jsonBaseBean) {
+//                        if (jsonBaseBean.getResultCode().equals(AppUtils.SUCCESS)) {
+//                            T.showShort(PhotoActivity.this, "上传成功！");
+//                        }
+//                    }
+//
+//                    @Override
+//                    protected void onError(String msg) {
+//
+//                    }
+//                }));
+    }
+}

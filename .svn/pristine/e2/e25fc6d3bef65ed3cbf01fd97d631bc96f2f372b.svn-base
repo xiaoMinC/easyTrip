@@ -1,0 +1,10 @@
+package com.example.chen.easygo;
+
+import android.app.Application;
+
+/**
+ * Created by Chen on 2018/10/8.
+ */
+
+public class EasyGoApplication extends Application {
+}

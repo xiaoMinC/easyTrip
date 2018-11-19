@@ -1,0 +1,34 @@
+package com.example.chen.easygo.me;
+
+import android.app.Activity;
+import android.os.Bundle;
+import android.widget.TextView;
+
+import com.example.chen.easygo.R;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+/**
+ * 个人中心
+ */
+public class AboutMeActivity extends Activity {
+
+    @BindView(R.id.tv_name_am)
+    TextView tvNameAm;
+    @BindView(R.id.card_num_am)
+    TextView cardNumAm;
+    @BindView(R.id.driver_date_am)
+    TextView driverDateAm;
+    @BindView(R.id.driver_img_am)
+    TextView driverImgAm;
+    @BindView(R.id.city_am)
+    TextView cityAm;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_about_me);
+        ButterKnife.bind(this);
+    }
+}
